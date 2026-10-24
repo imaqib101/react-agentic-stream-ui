@@ -111,6 +111,20 @@ import { HumanInTheLoopApproval } from '@imaqib101/react-agentic-stream-ui';
 />
 ```
 
+### 4. `ToolCallTimeline`
+Visualize multi-step agentic execution traces in a connected step-by-step timeline, complete with execution durations, expandable argument/output inspectors, and embedded action triggers:
+
+```tsx
+import { ToolCallTimeline } from '@imaqib101/react-agentic-stream-ui';
+
+<ToolCallTimeline
+  toolCalls={stream.toolCalls}
+  activeToolCallId="call_active"
+  onApprove={(id) => stream.approveTool(id)}
+  onReject={(id) => stream.rejectTool(id, 'User rejected step')}
+/>
+```
+
 ---
 
 ## 🧪 Testing & Quality Suite
