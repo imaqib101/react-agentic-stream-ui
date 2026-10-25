@@ -69,12 +69,7 @@ function AgentChat() {
 
   return (
     <div className="agent-container">
-      {thought && (
-        <details className="thought-box">
-          <summary>🧠 Model Reasoning</summary>
-          <p>{thought}</p>
-        </details>
-      )}
+      <AgentReasoningAccordion thought={thought} isStreaming={isStreaming} />
 
       <TokenStreamRenderer tokens={tokens} isStreaming={isStreaming} />
 
@@ -110,6 +105,25 @@ import { HumanInTheLoopApproval } from '@imaqib101/react-agentic-stream-ui';
   title="Financial Action Confirmation"
 />
 ```
+
+---
+
+### 3. `AgentReasoningAccordion`
+Collapsible reasoning and chain-of-thought accordion for deep reasoning models (Claude extended thinking, DeepSeek-R1, OpenAI o1/o3-mini). Features live streaming indicator, auto-expansion, duration formatting, word count, and clipboard copy:
+
+```tsx
+import { AgentReasoningAccordion } from '@imaqib101/react-agentic-stream-ui';
+
+<AgentReasoningAccordion
+  thought={stream.thought}
+  isStreaming={stream.isStreaming}
+  durationMs={2450}
+  title="Autonomous Plan & Reasoning"
+  showWordCount={true}
+/>
+```
+
+---
 
 ### 4. `ToolCallTimeline`
 Visualize multi-step agentic execution traces in a connected step-by-step timeline, complete with execution durations, expandable argument/output inspectors, and embedded action triggers:
