@@ -17,6 +17,7 @@ const initialState: AgenticStreamState = {
   isStreaming: false,
   status: 'idle',
   error: null,
+  stepCount: 0,
 };
 
 function agenticStreamReducer(state: AgenticStreamState, action: AgenticAction): AgenticStreamState {
@@ -30,6 +31,7 @@ function agenticStreamReducer(state: AgenticStreamState, action: AgenticAction):
         isStreaming: true,
         status: 'streaming',
         error: null,
+        stepCount: 0,
       };
 
     case 'FEED_CHUNK': {
@@ -108,6 +110,12 @@ function agenticStreamReducer(state: AgenticStreamState, action: AgenticAction):
             }),
           };
         }
+
+        case 'step_finish':
+          return {
+            ...state,
+            stepCount: state.stepCount + 1,
+          };
 
         case 'done':
           return {

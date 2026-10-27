@@ -40,4 +40,6 @@ export interface AgenticStreamState {
   isStreaming: boolean;
   status: 'idle' | 'streaming' | 'awaiting_approval' | 'completed' | 'error';
   error: Error | null;
+  /** Number of completed agent steps (incremented on each `step_finish` chunk). */
+  stepCount: number;
 }
