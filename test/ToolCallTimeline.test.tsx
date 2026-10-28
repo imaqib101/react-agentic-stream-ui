@@ -85,7 +85,7 @@ describe('ToolCallTimeline', () => {
         toolCalls={sampleCalls}
         onApprove={handleApprove}
         onReject={handleReject}
-      />
+      />,
     );
 
     // Expand call-2 which has requires_action status
@@ -106,12 +106,7 @@ describe('ToolCallTimeline', () => {
 
   it('invokes onSelectToolCall when an item is clicked', () => {
     const handleSelect = vi.fn();
-    render(
-      <ToolCallTimeline
-        toolCalls={sampleCalls}
-        onSelectToolCall={handleSelect}
-      />
-    );
+    render(<ToolCallTimeline toolCalls={sampleCalls} onSelectToolCall={handleSelect} />);
 
     fireEvent.click(screen.getByText('database_query'));
     expect(handleSelect).toHaveBeenCalledWith('call-1');

@@ -20,7 +20,10 @@ const initialState: AgenticStreamState = {
   stepCount: 0,
 };
 
-function agenticStreamReducer(state: AgenticStreamState, action: AgenticAction): AgenticStreamState {
+function agenticStreamReducer(
+  state: AgenticStreamState,
+  action: AgenticAction,
+): AgenticStreamState {
   switch (action.type) {
     case 'START_STREAM':
       return {
@@ -141,7 +144,7 @@ function agenticStreamReducer(state: AgenticStreamState, action: AgenticAction):
       return {
         ...state,
         toolCalls: state.toolCalls.map((tc) =>
-          tc.id === action.toolCallId ? { ...tc, status: 'executing' } : tc
+          tc.id === action.toolCallId ? { ...tc, status: 'executing' } : tc,
         ),
       };
 
@@ -151,7 +154,7 @@ function agenticStreamReducer(state: AgenticStreamState, action: AgenticAction):
         toolCalls: state.toolCalls.map((tc) =>
           tc.id === action.toolCallId
             ? { ...tc, status: 'failed', error: action.reason || 'Rejected by user' }
-            : tc
+            : tc,
         ),
       };
 
