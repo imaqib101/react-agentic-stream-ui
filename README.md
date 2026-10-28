@@ -1,8 +1,7 @@
 # ⚡ @imaqib101/react-agentic-stream-ui
 
-[![CI](https://github.com/imaqib101/react-agentic-stream-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/imaqib101/react-agentic-stream-ui/actions)
-[![npm version](https://img.shields.io/badge/npm-v1.0.0-blue?style=flat-square&logo=npm)](https://github.com/imaqib101/react-agentic-stream-ui)
-[![React 18 & 19 Ready](https://img.shields.io/badge/React-18%20%7C%2019-61dafb?style=flat-square&logo=react)](https://react.dev)
+[![CI](https://github.com/imaqib101/react-agentic-stream-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/imaqib101/react-agentic-stream-ui/actions/workflows/ci.yml)
+[![React >=18](https://img.shields.io/badge/React-%E2%89%A518-61dafb?style=flat-square&logo=react)](https://react.dev)
 [![TypeScript 5.x](https://img.shields.io/badge/TypeScript-5.6-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
 
@@ -43,8 +42,10 @@ Reduces chunked server-sent events or WebSocket tokens into a clean, predictable
 ```tsx
 import {
   useAgenticStream,
+  AgentReasoningAccordion,
   TokenStreamRenderer,
   ToolCallCard,
+  type StreamChunk,
 } from '@imaqib101/react-agentic-stream-ui';
 
 function AgentChat() {
@@ -61,16 +62,28 @@ function AgentChat() {
 
   // Connect to backend SSE / fetch stream
   const runPrompt = async (prompt: string) => {
-    startStream();
+    const signal = startStream(); // aborted automatically on reset/unmount
     const res = await fetch('/api/agent', {
       method: 'POST',
       body: JSON.stringify({ prompt }),
+      signal,
     });
 
-    const reader = res.body?.getReader();
-    // Feed parsed chunks into state machine
-    // feedChunk({ type: 'token', content: '...' });
-    // feedChunk({ type: 'tool_call_start', toolCallId: '1', toolName: 'sql_exec' });
+    // Read newline-delimited JSON chunks and feed them into the state machine.
+    const reader = res.body!.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() ?? '';
+      for (const line of lines) {
+        if (line.trim()) feedChunk(JSON.parse(line) as StreamChunk);
+      }
+    }
+    feedChunk({ type: 'done' });
   };
 
   return (
@@ -145,9 +158,50 @@ import { ToolCallTimeline } from '@imaqib101/react-agentic-stream-ui';
 
 ---
 
-## 🧪 Testing & Quality Suite
+## API reference
 
-Tested with **Vitest** and **@testing-library/react**:
+### `useAgenticStream(initial?)`
+
+Returns the current state plus actions.
+
+| State         | Type                                                                     | Description                                                            |
+| ------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| `tokens`      | `string`                                                                 | Accumulated answer text                                                |
+| `thought`     | `string`                                                                 | Accumulated reasoning text                                             |
+| `toolCalls`   | `ToolCallState[]`                                                        | Tool calls in arrival order                                            |
+| `isStreaming` | `boolean`                                                                | `true` between `startStream()` and done/error                          |
+| `status`      | `'idle' \| 'streaming' \| 'awaiting_approval' \| 'completed' \| 'error'` | Overall stream status (the hook never sets `awaiting_approval` itself) |
+| `error`       | `Error \| null`                                                          | Set by an `error` chunk                                                |
+| `stepCount`   | `number`                                                                 | Number of `step_finish` chunks seen                                    |
+
+| Action                    | Description                                                                |
+| ------------------------- | -------------------------------------------------------------------------- |
+| `startStream()`           | Clears state, aborts any previous stream and returns a fresh `AbortSignal` |
+| `feedChunk(chunk)`        | Applies one `StreamChunk` to the state                                     |
+| `approveTool(id)`         | Sets a tool call back to `executing`                                       |
+| `rejectTool(id, reason?)` | Marks a tool call `failed` (default reason: `Rejected by user`)            |
+| `finishStream()`          | Marks the stream `completed`                                               |
+| `reset()`                 | Aborts the active stream and returns to the initial state                  |
+
+The active stream is also aborted when the consuming component unmounts.
+
+### `StreamChunk`
+
+`type` is one of `token`, `thought`, `tool_call_start`, `tool_call_delta`, `tool_call_result`, `step_finish`, `error`, `done`. Optional fields: `content` (token/thought text), `toolCallId`, `toolName`, `toolArguments` (JSON text, appended on each delta and parsed into `parsedArguments` once valid), `toolResult`, `error`, `timestamp`.
+
+### `TokenStreamRenderer`
+
+Renders `tokens` as pre-wrapped text with a blinking cursor while `isStreaming`. Props: `tokens`, `isStreaming?`, `className?`. The cursor uses a CSS animation named `pulse`; define `@keyframes pulse` in your stylesheet to animate it.
+
+### Components at a glance
+
+`ToolCallCard` (`toolCall`, `onApprove?`, `onReject?`), `ToolCallTimeline`, `HumanInTheLoopApproval` and `AgentReasoningAccordion` are documented above; every prop is typed and exported as `<Component>Props`.
+
+---
+
+## 🧪 Development
+
+Tested with **Vitest** and **@testing-library/react**. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ```bash
 # Run unit tests
@@ -155,6 +209,10 @@ npm test
 
 # Type checking
 npm run typecheck
+
+# Lint and formatting
+npm run lint
+npm run format:check
 
 # Production build
 npm run build

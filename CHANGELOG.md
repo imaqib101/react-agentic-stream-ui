@@ -11,6 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - `LICENSE`, `CONTRIBUTING.md`, `.editorconfig`, `.nvmrc`.
 - `exports` map, `engines`, `sideEffects` and `prepublishOnly` in `package.json`.
 
+### Fixed
+
+- `useAgenticStream` now aborts the in-flight stream signal when the component unmounts.
+
+### Removed
+
+- No-op `useMemo` in `TokenStreamRenderer`.
+
 ## [1.0.0]
 
 ### Added
