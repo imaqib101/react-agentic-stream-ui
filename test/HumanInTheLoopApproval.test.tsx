@@ -14,7 +14,7 @@ describe('HumanInTheLoopApproval', () => {
         proposedArguments={{ script: 'DROP TABLE old_logs;' }}
         onApprove={handleApprove}
         onReject={handleReject}
-      />
+      />,
     );
 
     expect(screen.getByTestId('human-approval-card')).toBeDefined();
@@ -34,7 +34,7 @@ describe('HumanInTheLoopApproval', () => {
         proposedArguments={{ script: 'DROP TABLE old_logs;' }}
         onApprove={handleApprove}
         onReject={handleReject}
-      />
+      />,
     );
 
     const approveBtn = screen.getByText(/Approve Execution/i);
@@ -55,7 +55,7 @@ describe('HumanInTheLoopApproval', () => {
         proposedArguments={{ script: 'DROP TABLE old_logs;' }}
         onApprove={handleApprove}
         onReject={handleReject}
-      />
+      />,
     );
 
     const initialRejectBtn = screen.getByText(/Reject/i);
@@ -82,7 +82,7 @@ describe('HumanInTheLoopApproval', () => {
         proposedArguments={{ script: 'DROP TABLE old_logs;' }}
         onApprove={handleApprove}
         onReject={handleReject}
-      />
+      />,
     );
 
     fireEvent.click(screen.getByText(/Reject/i));

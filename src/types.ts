@@ -1,4 +1,5 @@
-export type ToolExecutionStatus = 'idle' | 'pending' | 'executing' | 'requires_action' | 'completed' | 'failed';
+export type ToolExecutionStatus =
+  'idle' | 'pending' | 'executing' | 'requires_action' | 'completed' | 'failed';
 
 export interface ToolCallState {
   id: string;

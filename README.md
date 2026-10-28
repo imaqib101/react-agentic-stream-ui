@@ -13,6 +13,7 @@
 ## 🎯 Motivation
 
 Building next-generation generative AI interfaces requires handling complex streaming states:
+
 1. **Interleaved Text & Reasoning:** Displaying token streams while isolating scratchpad/thought processes.
 2. **Dynamic Tool Execution:** Rendering multi-step tool calls, streaming argument deltas, and visual outputs with execution latencies.
 3. **Human-in-the-loop (HITL) Guardrails:** Enabling developers to gate critical tool operations behind interactive approval dialogs.
@@ -36,10 +37,15 @@ yarn add @imaqib101/react-agentic-stream-ui
 ## 🚀 Key Primitives & Usage
 
 ### 1. `useAgenticStream` Hook
+
 Reduces chunked server-sent events or WebSocket tokens into a clean, predictable state machine.
 
 ```tsx
-import { useAgenticStream, TokenStreamRenderer, ToolCallCard } from '@imaqib101/react-agentic-stream-ui';
+import {
+  useAgenticStream,
+  TokenStreamRenderer,
+  ToolCallCard,
+} from '@imaqib101/react-agentic-stream-ui';
 
 function AgentChat() {
   const {
@@ -75,12 +81,7 @@ function AgentChat() {
 
       <div className="tools-list">
         {toolCalls.map((tc) => (
-          <ToolCallCard
-            key={tc.id}
-            toolCall={tc}
-            onApprove={approveTool}
-            onReject={rejectTool}
-          />
+          <ToolCallCard key={tc.id} toolCall={tc} onApprove={approveTool} onReject={rejectTool} />
         ))}
       </div>
     </div>
@@ -91,6 +92,7 @@ function AgentChat() {
 ---
 
 ### 2. `HumanInTheLoopApproval`
+
 Interactive UI gatekeeper component for high-stakes tool invocations (e.g. database deletions, payment triggers, email transmissions).
 
 ```tsx
@@ -99,16 +101,17 @@ import { HumanInTheLoopApproval } from '@imaqib101/react-agentic-stream-ui';
 <HumanInTheLoopApproval
   toolCallId="call_tx99"
   toolName="transfer_funds"
-  proposedArguments={{ recipient: "vendor@corp.internal", amount: 4500 }}
+  proposedArguments={{ recipient: 'vendor@corp.internal', amount: 4500 }}
   onApprove={(id) => handleExecute(id)}
   onReject={(id, reason) => handleCancel(id, reason)}
   title="Financial Action Confirmation"
-/>
+/>;
 ```
 
 ---
 
 ### 3. `AgentReasoningAccordion`
+
 Collapsible reasoning and chain-of-thought accordion for deep reasoning models (Claude extended thinking, DeepSeek-R1, OpenAI o1/o3-mini). Features live streaming indicator, auto-expansion, duration formatting, word count, and clipboard copy:
 
 ```tsx
@@ -120,12 +123,13 @@ import { AgentReasoningAccordion } from '@imaqib101/react-agentic-stream-ui';
   durationMs={2450}
   title="Autonomous Plan & Reasoning"
   showWordCount={true}
-/>
+/>;
 ```
 
 ---
 
 ### 4. `ToolCallTimeline`
+
 Visualize multi-step agentic execution traces in a connected step-by-step timeline, complete with execution durations, expandable argument/output inspectors, and embedded action triggers:
 
 ```tsx
@@ -136,7 +140,7 @@ import { ToolCallTimeline } from '@imaqib101/react-agentic-stream-ui';
   activeToolCallId="call_active"
   onApprove={(id) => stream.approveTool(id)}
   onReject={(id) => stream.rejectTool(id, 'User rejected step')}
-/>
+/>;
 ```
 
 ---
@@ -160,9 +164,10 @@ npm run build
 
 ## 👤 Author & Maintainer
 
-**Mohammed Aqib**  
-- GitHub: [@imaqib101](https://github.com/imaqib101)  
-- Location: Bengaluru, India  
+**Mohammed Aqib**
+
+- GitHub: [@imaqib101](https://github.com/imaqib101)
+- Location: Bengaluru, India
 - Focus: Senior Full-Stack & Frontend Architecture (React, Vue 3, TypeScript, Distributed Systems)
 
 ---

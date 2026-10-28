@@ -114,9 +114,7 @@ export const AgentReasoningAccordion: React.FC<AgentReasoningAccordionProps> = (
             ▶
           </span>
           <span style={{ fontSize: '15px' }}>🧠</span>
-          <span style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>
-            {title}
-          </span>
+          <span style={{ fontSize: '13px', fontWeight: 600, color: '#374151' }}>{title}</span>
 
           {isStreaming ? (
             <span
@@ -164,10 +162,7 @@ export const AgentReasoningAccordion: React.FC<AgentReasoningAccordionProps> = (
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           {showWordCount && wordCount > 0 && (
-            <span
-              data-testid="reasoning-word-count"
-              style={{ fontSize: '11px', color: '#9ca3af' }}
-            >
+            <span data-testid="reasoning-word-count" style={{ fontSize: '11px', color: '#9ca3af' }}>
               {wordCount} {wordCount === 1 ? 'word' : 'words'}
             </span>
           )}

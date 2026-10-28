@@ -104,9 +104,7 @@ export const ToolCallTimeline: React.FC<ToolCallTimelineProps> = ({
         const isExpanded = !!expandedIds[call.id];
         const statusColor = getStatusColor(call.status);
         const durationMs =
-          call.startedAt && call.completedAt
-            ? call.completedAt - call.startedAt
-            : undefined;
+          call.startedAt && call.completedAt ? call.completedAt - call.startedAt : undefined;
 
         return (
           <div
@@ -217,9 +215,7 @@ export const ToolCallTimeline: React.FC<ToolCallTimelineProps> = ({
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   {durationMs !== undefined && (
-                    <span style={{ fontSize: '12px', color: '#6b7280' }}>
-                      {durationMs}ms
-                    </span>
+                    <span style={{ fontSize: '12px', color: '#6b7280' }}>{durationMs}ms</span>
                   )}
                   {allowToggleExpand && (
                     <span style={{ fontSize: '11px', color: '#9ca3af' }}>
@@ -233,7 +229,14 @@ export const ToolCallTimeline: React.FC<ToolCallTimelineProps> = ({
               {isExpanded && (
                 <div style={{ padding: '12px 14px', fontSize: '13px' }}>
                   <div style={{ marginBottom: '8px' }}>
-                    <div style={{ fontSize: '11px', fontWeight: 600, color: '#4b5563', marginBottom: '4px' }}>
+                    <div
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        color: '#4b5563',
+                        marginBottom: '4px',
+                      }}
+                    >
                       INPUT ARGUMENTS
                     </div>
                     <pre
@@ -254,7 +257,14 @@ export const ToolCallTimeline: React.FC<ToolCallTimelineProps> = ({
 
                   {call.output && (
                     <div style={{ marginBottom: '8px' }}>
-                      <div style={{ fontSize: '11px', fontWeight: 600, color: '#16a34a', marginBottom: '4px' }}>
+                      <div
+                        style={{
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          color: '#16a34a',
+                          marginBottom: '4px',
+                        }}
+                      >
                         OUTPUT RESULT
                       </div>
                       <pre
@@ -277,7 +287,14 @@ export const ToolCallTimeline: React.FC<ToolCallTimelineProps> = ({
 
                   {call.error && (
                     <div style={{ marginBottom: '8px' }}>
-                      <div style={{ fontSize: '11px', fontWeight: 600, color: '#dc2626', marginBottom: '4px' }}>
+                      <div
+                        style={{
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          color: '#dc2626',
+                          marginBottom: '4px',
+                        }}
+                      >
                         ERROR
                       </div>
                       <pre

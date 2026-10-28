@@ -14,7 +14,7 @@ describe('AgentReasoningAccordion', () => {
         thought="Analyzing user query..."
         isStreaming={true}
         title="Active Reasoning"
-      />
+      />,
     );
 
     expect(screen.getByTestId('agent-reasoning-accordion')).toBeDefined();
@@ -31,7 +31,7 @@ describe('AgentReasoningAccordion', () => {
       <AgentReasoningAccordion
         thought="Detailed step 1: fetch data\nStep 2: parse response."
         defaultExpanded={false}
-      />
+      />,
     );
 
     const header = screen.getByTestId('reasoning-header');
@@ -55,7 +55,7 @@ describe('AgentReasoningAccordion', () => {
         thought="First step is to validate the schema."
         durationMs={1850}
         showWordCount={true}
-      />
+      />,
     );
 
     expect(screen.getByTestId('reasoning-duration-badge')).toBeDefined();
@@ -71,7 +71,7 @@ describe('AgentReasoningAccordion', () => {
         thought="Chain-of-thought hypothesis."
         defaultExpanded={true}
         onCopy={onCopyMock}
-      />
+      />,
     );
 
     const copyBtn = screen.getByTestId('reasoning-copy-btn');

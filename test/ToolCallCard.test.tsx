@@ -45,9 +45,7 @@ describe('ToolCallCard', () => {
       status: 'requires_action',
     };
 
-    render(
-      <ToolCallCard toolCall={pendingTool} onApprove={onApprove} onReject={onReject} />
-    );
+    render(<ToolCallCard toolCall={pendingTool} onApprove={onApprove} onReject={onReject} />);
 
     const approveBtn = screen.getByText(/Approve Call/i);
     const rejectBtn = screen.getByText(/Reject/i);
