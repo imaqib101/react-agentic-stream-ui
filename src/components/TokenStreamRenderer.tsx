@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 export interface TokenStreamRendererProps {
   tokens: string;
@@ -11,10 +11,6 @@ export const TokenStreamRenderer: React.FC<TokenStreamRendererProps> = ({
   isStreaming = false,
   className = '',
 }) => {
-  const renderedContent = useMemo(() => {
-    return tokens;
-  }, [tokens]);
-
   return (
     <div
       className={`agentic-token-stream ${className}`}
@@ -26,7 +22,7 @@ export const TokenStreamRenderer: React.FC<TokenStreamRendererProps> = ({
         wordBreak: 'break-word',
       }}
     >
-      {renderedContent}
+      {tokens}
       {isStreaming && (
         <span
           className="agentic-streaming-cursor"

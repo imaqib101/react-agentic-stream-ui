@@ -1,4 +1,4 @@
-import { useReducer, useCallback, useRef } from 'react';
+import { useReducer, useCallback, useRef, useEffect } from 'react';
 import { AgenticStreamState, StreamChunk, ToolCallState } from '../types';
 
 type AgenticAction =
@@ -188,6 +188,13 @@ export function useAgenticStream(initial?: Partial<AgenticStreamState>) {
   });
 
   const abortControllerRef = useRef<AbortController | null>(null);
+
+  // Abort any in-flight stream when the consuming component unmounts.
+  useEffect(() => {
+    return () => {
+      abortControllerRef.current?.abort();
+    };
+  }, []);
 
   const startStream = useCallback(() => {
     if (abortControllerRef.current) {

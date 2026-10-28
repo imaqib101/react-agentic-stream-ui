@@ -134,3 +134,18 @@ describe('useAgenticStream edge cases', () => {
     expect(result.current.status).toBe('idle');
   });
 });
+
+describe('useAgenticStream lifecycle', () => {
+  it('aborts the active stream signal on unmount', () => {
+    const { result, unmount } = renderHook(() => useAgenticStream());
+
+    let signal!: AbortSignal;
+    act(() => {
+      signal = result.current.startStream();
+    });
+    expect(signal.aborted).toBe(false);
+
+    unmount();
+    expect(signal.aborted).toBe(true);
+  });
+});
