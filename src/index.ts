@@ -6,3 +6,4 @@ export { HumanInTheLoopApproval, type HumanInTheLoopApprovalProps } from './comp
 export { ToolCallTimeline, type ToolCallTimelineProps } from './components/ToolCallTimeline';
 export { AgentReasoningAccordion, type AgentReasoningAccordionProps } from './components/AgentReasoningAccordion';
 export { useStreamMetrics, type StreamMetrics } from './hooks/useStreamMetrics';
+export { useStreamBuffer, type StreamBufferOptions } from './hooks/useStreamBuffer';
