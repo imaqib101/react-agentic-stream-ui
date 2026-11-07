@@ -141,6 +141,27 @@ import { ToolCallTimeline } from '@imaqib101/react-agentic-stream-ui';
 
 ---
 
+### 5. `useStreamArtifacts` & `ArtifactCard`
+Extract and render structured code and markdown artifacts generated during streaming (supporting `<artifact>` and `<antArtifact>` tags), even before the stream closes:
+
+```tsx
+import { useStreamArtifacts, ArtifactCard } from '@imaqib101/react-agentic-stream-ui';
+
+function CopilotArtifactsView({ rawStream }: { rawStream: string }) {
+  const { artifacts, latestArtifact } = useStreamArtifacts(rawStream, true);
+
+  return (
+    <div>
+      {artifacts.map((art) => (
+        <ArtifactCard key={art.id} artifact={art} />
+      ))}
+    </div>
+  );
+}
+```
+
+---
+
 ## 🧪 Testing & Quality Suite
 
 Tested with **Vitest** and **@testing-library/react**:

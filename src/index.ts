@@ -7,3 +7,6 @@ export { ToolCallTimeline, type ToolCallTimelineProps } from './components/ToolC
 export { AgentReasoningAccordion, type AgentReasoningAccordionProps } from './components/AgentReasoningAccordion';
 export { useStreamMetrics, type StreamMetrics } from './hooks/useStreamMetrics';
 export { useStreamBuffer, type StreamBufferOptions } from './hooks/useStreamBuffer';
+export { useStreamArtifacts, extractArtifacts, type StreamArtifact, type UseStreamArtifactsResult } from './hooks/useStreamArtifacts';
+export { ArtifactCard, type ArtifactCardProps } from './components/ArtifactCard';
+

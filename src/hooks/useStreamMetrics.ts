@@ -27,6 +27,7 @@ export function useStreamMetrics(state: AgenticStreamState): StreamMetrics {
       return () => clearInterval(interval);
     } else {
       startTimeRef.current = null;
+      return undefined;
     }
   }, [state.isStreaming]);
 
