@@ -89,4 +89,31 @@ describe('useAgenticStream', () => {
     expect(result.current.toolCalls[0].status).toBe('failed');
     expect(result.current.toolCalls[0].error).toBe('Permission denied');
   });
+
+  it('transitions to awaiting_approval on tool_call_requires_action and resumes streaming on approveTool', () => {
+    const { result } = renderHook(() => useAgenticStream());
+
+    act(() => {
+      result.current.startStream();
+      result.current.feedChunk({
+        type: 'tool_call_start',
+        toolCallId: 'call_hitl_1',
+        toolName: 'transfer_funds',
+      });
+      result.current.feedChunk({
+        type: 'tool_call_requires_action',
+        toolCallId: 'call_hitl_1',
+      });
+    });
+
+    expect(result.current.toolCalls[0].status).toBe('requires_action');
+    expect(result.current.status).toBe('awaiting_approval');
+
+    act(() => {
+      result.current.approveTool('call_hitl_1');
+    });
+
+    expect(result.current.toolCalls[0].status).toBe('executing');
+    expect(result.current.status).toBe('streaming');
+  });
 });

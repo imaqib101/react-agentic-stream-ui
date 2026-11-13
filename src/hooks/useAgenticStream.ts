@@ -87,6 +87,20 @@ function agenticStreamReducer(state: AgenticStreamState, action: AgenticAction):
           };
         }
 
+        case 'tool_call_requires_action': {
+          if (!chunk.toolCallId) return state;
+          const updatedToolCalls = state.toolCalls.map((tc) =>
+            tc.id === chunk.toolCallId
+              ? { ...tc, status: 'requires_action' as const }
+              : tc
+          );
+          return {
+            ...state,
+            status: 'awaiting_approval',
+            toolCalls: updatedToolCalls,
+          };
+        }
+
         case 'tool_call_result': {
           if (!chunk.toolCallId) return state;
           return {
@@ -137,23 +151,31 @@ function agenticStreamReducer(state: AgenticStreamState, action: AgenticAction):
       }
     }
 
-    case 'APPROVE_TOOL':
+    case 'APPROVE_TOOL': {
+      const updatedToolCalls = state.toolCalls.map((tc) =>
+        tc.id === action.toolCallId ? { ...tc, status: 'executing' as const } : tc
+      );
+      const hasPendingApproval = updatedToolCalls.some((tc) => tc.status === 'requires_action');
       return {
         ...state,
-        toolCalls: state.toolCalls.map((tc) =>
-          tc.id === action.toolCallId ? { ...tc, status: 'executing' } : tc
-        ),
+        status: hasPendingApproval ? 'awaiting_approval' : state.isStreaming ? 'streaming' : state.status,
+        toolCalls: updatedToolCalls,
       };
+    }
 
-    case 'REJECT_TOOL':
+    case 'REJECT_TOOL': {
+      const updatedToolCalls = state.toolCalls.map((tc) =>
+        tc.id === action.toolCallId
+          ? { ...tc, status: 'failed' as const, error: action.reason || 'Rejected by user' }
+          : tc
+      );
+      const hasPendingApproval = updatedToolCalls.some((tc) => tc.status === 'requires_action');
       return {
         ...state,
-        toolCalls: state.toolCalls.map((tc) =>
-          tc.id === action.toolCallId
-            ? { ...tc, status: 'failed', error: action.reason || 'Rejected by user' }
-            : tc
-        ),
+        status: hasPendingApproval ? 'awaiting_approval' : state.isStreaming ? 'streaming' : state.status,
+        toolCalls: updatedToolCalls,
       };
+    }
 
     case 'FINISH_STREAM':
       return {

@@ -162,6 +162,67 @@ function CopilotArtifactsView({ rawStream }: { rawStream: string }) {
 
 ---
 
+### 6. `AgentSuggestionList`
+Render interactive follow-up prompt chips, quick action cards, or next steps once an agent turn completes or awaits user guidance:
+
+```tsx
+import { AgentSuggestionList, AgentSuggestionItem } from '@imaqib101/react-agentic-stream-ui';
+
+const suggestions: AgentSuggestionItem[] = [
+  {
+    id: 'tests',
+    label: 'Generate Unit Tests',
+    description: 'Add 100% branch coverage with Vitest',
+    category: 'Testing',
+  },
+  {
+    id: 'explain',
+    label: 'Explain Architecture',
+    description: 'Break down data flow and state machine',
+    category: 'Docs',
+  },
+];
+
+<AgentSuggestionList
+  suggestions={suggestions}
+  variant="cards" // 'chips' | 'cards' | 'list'
+  title="Suggested Next Steps"
+  disabled={stream.isStreaming}
+  onSelect={(item) => handleUserPrompt(typeof item === 'string' ? item : item.label)}
+/>
+```
+
+---
+
+### 7. `consumeAgentStream` SSE & Fetch Utility
+Streamline consuming SSE or chunked fetch responses into `useAgenticStream` with zero boilerplate, handling line buffers, event prefixes, comments, and AbortSignals:
+
+```tsx
+import { useAgenticStream, consumeAgentStream } from '@imaqib101/react-agentic-stream-ui';
+
+const stream = useAgenticStream();
+
+const handleQuery = async (prompt: string) => {
+  const signal = stream.startStream();
+
+  const response = await fetch('/api/copilot-chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt }),
+    signal,
+  });
+
+  await consumeAgentStream(response, {
+    signal,
+    onChunk: (chunk) => stream.feedChunk(chunk),
+    onError: (err) => console.error('Stream error:', err),
+    onComplete: () => stream.finishStream(),
+  });
+};
+```
+
+---
+
 ## 🧪 Testing & Quality Suite
 
 Tested with **Vitest** and **@testing-library/react**:

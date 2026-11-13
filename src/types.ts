@@ -17,6 +17,7 @@ export type StreamChunkType =
   | 'thought'
   | 'tool_call_start'
   | 'tool_call_delta'
+  | 'tool_call_requires_action'
   | 'tool_call_result'
   | 'step_finish'
   | 'error'
