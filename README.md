@@ -223,6 +223,30 @@ const handleQuery = async (prompt: string) => {
 
 ---
 
+### 8. `StreamScrollContainer` & `useStreamAutoScroll`
+Automatically pin chat and token streams to the viewport bottom as new content arrives, while seamlessly disengaging when the user scrolls up to review prior reasoning or tool outputs:
+
+```tsx
+import { StreamScrollContainer, TokenStreamRenderer, useAgenticStream } from '@imaqib101/react-agentic-stream-ui';
+
+function AgentChatViewport() {
+  const stream = useAgenticStream();
+
+  return (
+    <StreamScrollContainer
+      scrollDependency={stream.tokens}
+      threshold={48}
+      showScrollButton={true}
+      style={{ height: '500px' }}
+    >
+      <TokenStreamRenderer tokens={stream.tokens} isStreaming={stream.isStreaming} />
+    </StreamScrollContainer>
+  );
+}
+```
+
+---
+
 ## 🧪 Testing & Quality Suite
 
 Tested with **Vitest** and **@testing-library/react**:

@@ -11,4 +11,5 @@ export { useStreamArtifacts, extractArtifacts, type StreamArtifact, type UseStre
 export { ArtifactCard, type ArtifactCardProps } from './components/ArtifactCard';
 export { AgentSuggestionList, type AgentSuggestionListProps, type AgentSuggestionItem } from './components/AgentSuggestionList';
 export { consumeAgentStream, type ConsumeAgentStreamOptions, type AgentStreamSource } from './utils/consumeAgentStream';
-
+export { useStreamAutoScroll, type UseStreamAutoScrollOptions, type UseStreamAutoScrollResult } from './hooks/useStreamAutoScroll';
+export { StreamScrollContainer, type StreamScrollContainerProps } from './components/StreamScrollContainer';
